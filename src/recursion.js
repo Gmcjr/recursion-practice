@@ -128,6 +128,11 @@ return powerOfTwo(n / 2);
 
 // 9. Write a function that accepts a string a reverses it.
 var reverse = function(string) {
+  if (string.length < 2) {
+    return string;
+  }
+
+  return string.charAt(string.length - 1) + reverse(string.slice(0, -1));
 };
 
 // 10. Write a function that determines if a string is a palindrome.
