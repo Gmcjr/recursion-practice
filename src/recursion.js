@@ -46,6 +46,10 @@ let rest = array.slice(1);
 
 // 4. Check if a number is even.
 var isEven = function(n) {
+  if (n < 0) {
+    return isEven(-n);
+  }
+  
   if (n === 0) return true;
   if (n === 1) return false;
   return isEven(n - 2);
@@ -55,11 +59,34 @@ var isEven = function(n) {
 // sumBelow(10); // 45
 // sumBelow(7); // 21
 var sumBelow = function(n) {
+  // set base case
+  if (n === 0 || n === 1 || n === -1) {
+    return 0;
+  }
+
+  if (n > 1) {
+    return (n - 1) + sumBelow(n - 1);
+  }
+
+  if (n < -1) {
+    return (n + 1) + sumBelow(n + 1);
+  }
 };
 
 // 6. Get the integers in range (x, y).
 // Example:  range(2, 9);  // [3, 4, 5, 6, 7, 8]
 var range = function(x, y) {
+  if (x >= y - 1 && x <= y + 1) {
+    return [];
+  } 
+
+  if (x < y) {
+    return [x + 1].concat(range(x + 1, y));
+  }
+
+  if (x > y) {
+    return [x - 1].concat(range(x - 1, y));
+  }
 };
 
 // 7. Compute the exponent of a number.
@@ -68,6 +95,20 @@ var range = function(x, y) {
 // Example:  exponent(4,3);  // 64
 // https://www.khanacademy.org/computing/computer-science/algorithms/recursive-algorithms/a/computing-powers-of-a-number
 var exponent = function(base, exp) {
+  if (exp === 0) {
+    return 1;
+  }
+
+  if (exp === 1) {
+    return base;
+  }
+
+  if (exp < 0) {
+    return 1 / exponent(base, -exp);
+  }
+
+  return base * exponent(base, exp - 1);
+
 };
 
 // 8. Determine if a number is a power of two.
