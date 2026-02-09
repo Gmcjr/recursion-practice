@@ -213,24 +213,46 @@ var compareStr = function(str1, str2) {
 // 16. Write a function that accepts a string and creates an array where each letter
 // occupies an index of the array.
 var createArray = function(str){
-
-
+  if (str.length === 0) {
+    return [];
+  }
+  
+  return [str.charAt(0)].concat(createArray(str.slice(1)));
 };
 
 // 17. Reverse the order of an array
 var reverseArr = function (array) {
+  if (array.length === 0) {
+    return [];
+  }
+
+return [array[array.length - 1]].concat(reverseArr(array.slice(0, -1)))
 };
 
 // 18. Create a new array with a given value and length.
 // buildList(0,5) // [0,0,0,0,0]
 // buildList(7,3) // [7,7,7]
 var buildList = function(value, length) {
+  if (length === 0) {
+    return [];
+  }
+
+  return [value].concat(buildList(value, length - 1));
 };
 
 // 19. Count the occurence of a value inside a list.
 // countOccurrence([2,7,4,4,1,4], 4) // 3
 // countOccurrence([2,'banana',4,4,1,'banana'], 'banana') // 2
 var countOccurrence = function(array, value) {
+  if (array.length === 0) {
+    return 0;
+  }
+
+  if (array[0] === value) {
+    return 1 + countOccurrence(array.slice(1), value);
+  }
+
+  return 0 + countOccurrence(array.slice(1), value);
 };
 
 // 20. Write a recursive version of map.
