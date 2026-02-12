@@ -382,8 +382,7 @@ var capitalizeFirst = function(array) {
     let capped = array[0].charAt(0).toUpperCase() + array[0].slice(1);
     return [capped].concat(capitalizeFirst(array.slice(1)));
 };
-// let array = ['pig', 'eel', 'eagle'];
-// console.log(capitalizeFirst(array));
+
 
 
 // 28. Return the sum of all even numbers in an object containing nested objects.
@@ -396,11 +395,32 @@ var capitalizeFirst = function(array) {
 // };
 // nestedEvenSum(obj1); // 10
 var nestedEvenSum = function(obj) {
+  let sum = 0;
+
+  for (let key in obj) {
+    if (typeof obj[key] === 'number' && obj[key] % 2 === 0) {
+      sum += obj[key];
+    }
+    if (typeof obj[key] === 'object') {
+      sum += nestedEvenSum(obj[key]);
+    }
+  }
+  return sum;
 };
 
 // 29. Flatten an array containing nested arrays.
 // Example: flatten([1,[2],[3,[[4]]],5]); // [1,2,3,4,5]
 var flatten = function(arrays) {
+  let output = [];
+
+  for (let i = 0; i < arrays.length; i++) {
+    if (Array.isArray(arrays[i])) {
+      output = output.concat(flatten(arrays[i]));
+    } else {
+      output.push(arrays[i]);
+    }
+  }
+  return output;
 };
 
 // 30. Given a string, return an object containing tallies of each letter.
