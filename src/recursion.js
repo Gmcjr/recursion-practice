@@ -475,38 +475,155 @@ var augmentElements = function(array, aug) {
 // minimizeZeroes([2,0,0,0,1,4]) // [2,0,1,4]
 // minimizeZeroes([2,0,0,0,1,0,0,4]) // [2,0,1,0,4]
 var minimizeZeroes = function(array) {
+  if (array.length === 0) {
+    return [];
+  }
+    if (array[0] === 0 && array[1] === 0) {
+      return minimizeZeroes(array.slice(1));
+    }
+
+    return [array[0]].concat(minimizeZeroes(array.slice(1)));
 };
 
 // 34. Alternate the numbers in an array between positive and negative regardless of
 // their original sign.  The first number in the index always needs to be positive.
 // alternateSign([2,7,8,3,1,4]) // [2,-7,8,-3,1,-4]
 // alternateSign([-2,-7,8,3,-1,4]) // [2,-7,8,-3,1,-4]
-var alternateSign = function(array) {
+var alternateSign = function(array, index = 0) {
+  if (array.length === 0) {
+    return [];
+  }
+
+let current;
+
+if (index % 2 === 0) {
+  if (array[0] < 0) {
+    current = array[0] * -1;
+  } else {
+    current = array[0];
+  }
+} else {
+    if (array[0] > 0) {
+      current = array[0] * -1;
+    } else {
+      current = array[0];
+  } 
+}
+
+  return [current].concat(alternateSign(array.slice(1), index + 1));
 };
 
 // 35. Given a string, return a string with digits converted to their word equivalent.
 // Assume all numbers are single digits (less than 10).
 // numToText("I have 5 dogs and 6 ponies"); // "I have five dogs and six ponies"
 var numToText = function(str) {
+  if (str.length === 0) {
+    return '';
+  }
+const numWords = {
+  '0': 'zero',
+  '1': 'one',
+  '2': 'two',
+  '3': 'three',
+  '4': 'four',
+  '5': 'five',
+  '6': 'six',
+  '7': 'seven',
+  '8': 'eight',
+  '9': 'nine'
+};
+
+if (numWords[str[0]]) {
+    return numWords[str[0]] + numToText(str.slice(1));
+} else {
+  return str[0] + numToText(str.slice(1));
+}
 };
 
 // *** EXTRA CREDIT ***
 
 // 36. Return the number of times a tag occurs in the DOM.
 var tagCount = function(tag, node) {
+  if (!node) {
+    return 0;
+  }
+  let count = 0;
+
+  if (node.tagName && node.tagName.toLowerCase() === tag.toLowerCase()) {
+    count = 1;
+  }
+  for (let i = 0; i < node.childNodes.length; i++) {
+    count += tagCount(tag, node.childNodes[i])
+  }
+  return count;
 };
 
 // 37. Write a function for binary search.
 // Sample array:  [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
 // console.log(binarySearch(5)) will return '5'
 
-var binarySearch = function(array, target, min, max) {
+var binarySearch = function(array, target, min = 0, max = array.length - 1) {
+  if (min > max) {
+    return null;
+  }
+
+    let mid = Math.floor((min + max) / 2);
+
+  if (array[mid] === target) {
+    return mid;
+  }
+
+  if (target < array[mid]) {
+    return binarySearch(array, target, min, mid - 1);
+  } else {
+    return binarySearch(array, target, mid + 1, max);
+  }
 };
 
 // 38. Write a merge sort function.
 // Sample array:  [34,7,23,32,5,62]
 // Sample output: [5,7,23,32,34,62]
+let merge = function(left, right) {
+  let result = [];
+  let leftIndex = 0;
+  let rightIndex = 0;
+
+  while (leftIndex < left.length && rightIndex < right.length) {
+    if (left[leftIndex] < right[rightIndex]) {
+      result.push(left[leftIndex]);
+      leftIndex++;
+    } else {
+      result.push(right[rightIndex]);
+      rightIndex++;
+    }
+  }
+
+  while (leftIndex < left.length) {
+    result.push(left[leftIndex]);
+    leftIndex++;
+  }
+
+  while (rightIndex < right.length) {
+    result.push(right[rightIndex]);
+    rightIndex++;
+  }
+
+  return result;
+};
+
 var mergeSort = function(array) {
+  if (array.length <= 1) {
+    return array;
+  }
+
+  let mid = Math.floor(array.length / 2);
+  let left = array.slice(0, mid);
+  let right = array.slice(mid);
+
+  let sortedLeft = mergeSort(left);
+  let sortedRight = mergeSort(right);
+
+  return merge(sortedLeft, sortedRight);
 };
 
 
